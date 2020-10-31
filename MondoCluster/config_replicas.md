@@ -82,3 +82,63 @@ Ejecutar comando desde una instancia dentro de la replica respectiva
 ### Cartago
 
 `rs.addArb("172.22.6.104:27021")`
+
+## Configuracion del Shard
+
+Ejecutar desde una instancia de la replica de router
+
+Indico cual va a ser la base de datos que va a soportar sharding
+`sh.enableSharding("alertme");`
+
+Luego el collection y el campo del collection que va servir como shardkey
+`sh.shardCollection("alertme.locations", { nombre : "hashed" } );`
+
+
+### Rangos de shards
+
+[Shard Range](https://docs.mongodb.com/manual/reference/method/sh.updateZoneKeyRange/#sh.updateZoneKeyRange)
+
+* Zonas
+
+```
+sh.addShardToZone("alertme_moravia","Moravia")
+sh.addShardToZone("alertme_coronado","Coronado")
+sh.addShardToZone("alertme_cartago","Cartago")
+```
+
+* Rango Moravia
+
+```
+sh.updateZoneKeyRange(
+"alertme.locations",
+{canton: "Moravia"},
+{canton: "Moravia_"},
+"Moravia"
+)
+```
+
+* Rango Coronado
+
+```
+sh.updateZoneKeyRange(
+"alertme.locations",
+{canton: "Coronado"},
+{canton: "Coronado_"},
+"Coronado"
+)
+```
+
+* Rango Cartago
+
+```
+sh.updateZoneKeyRange(
+"alertme.locations",
+{canton: "Cartago"},
+{canton: "Cartago_"},
+"Cartago"
+)
+```
+
+* Shard Collection
+
+`sh.shardCollection("alertme.locations",  { canton: 1 } );`
