@@ -4,15 +4,17 @@
 
 Ejecutar desde una instancia dentro de la replica de config
 
+```
 rs.initiate({
   _id:"alertme_cfg",
-  configsvr:true, ##!! Importante
+  configsvr:true,
   members: [
     {_id:0,host:"172.22.10.26:27017"},
     {_id:1,host:"172.22.6.104:27017"}
   ]
 })
 rs.status()
+```
 
 ## Shards
 
@@ -20,6 +22,7 @@ Ejecutar desde una instancia dentro de la replica respectiva
 
 ### Moravia
 
+```
 rs.initiate({
   _id:"alertme_moravia",
   members: [
@@ -27,9 +30,11 @@ rs.initiate({
     {_id:1,host:"172.22.135.232:27019"}
   ]
 })
+```
 
 ### Coronado
 
+```
 rs.initiate({
   _id:"alertme_coronado",
   members: [
@@ -37,9 +42,11 @@ rs.initiate({
     {_id:1,host:"172.22.124.8:27020"}
   ]
 })
+```
 
 ### Cartago
 
+```
 rs.initiate({
   _id:"alertme_cartago",
   members: [
@@ -47,15 +54,18 @@ rs.initiate({
     {_id:1,host:"172.22.124.8:27021"}
   ]
 })
+```
 
 ## Routers
 
 Ejecutar desde una instancia de la replica de routing
 
+```
 sh.addShard( "alertme_moravia/172.22.10.26:27019");
 sh.addShard( "alertme_coronado/172.22.135.232:27020");
 sh.addShard( "alertme_cartago/172.22.6.104:27021");
 sh.status();
+```
 
 ## Arbitros
 
@@ -63,12 +73,12 @@ Ejecutar comando desde una instancia dentro de la replica respectiva
 
 ### Moravia
 
-rs.addArb("172.22.124.8:27019")
+`rs.addArb("172.22.124.8:27019")`
 
 ### Coronado
 
-rs.addArb("172.22.135.232:27020")
+`rs.addArb("172.22.135.232:27020")`
 
 ### Cartago
 
-rs.addArb("172.22.6.104:27021")
+`rs.addArb("172.22.6.104:27021")`
