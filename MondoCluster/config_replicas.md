@@ -58,6 +58,20 @@ rs.initiate({
 
 ## Routers
 
+### Replica
+
+```javascript
+rs.initiate({
+  _id:"alertme_router",
+  members: [
+    {_id:0,host:"172.22.135.232:27018"},
+    {_id:1,host:"172.22.124.8:27018"}
+  ]
+})
+```
+
+### Shards
+
 Ejecutar desde una instancia de la replica de routing
 
 ```javascript
