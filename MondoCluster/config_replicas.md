@@ -26,8 +26,8 @@ Ejecutar desde una instancia dentro de la replica respectiva
 rs.initiate({
   _id:"alertme_moravia",
   members: [
-    {_id:0,host:"172.22.10.26:27019"},
-    {_id:1,host:"172.22.135.232:27019"}
+    {_id:0,host:"172.22.10.26:27022"},
+    {_id:1,host:"172.22.135.232:27022"}
   ]
 })
 ```
@@ -58,10 +58,12 @@ rs.initiate({
 
 ## Routers
 
-Ejecutar desde una instancia de la replica de routing
+### Shards
+
+Ejecutar desde cada instancia de routing
 
 ```javascript
-sh.addShard( "alertme_moravia/172.22.10.26:27019");
+sh.addShard( "alertme_moravia/172.22.10.26:27022");
 sh.addShard( "alertme_coronado/172.22.135.232:27020");
 sh.addShard( "alertme_cartago/172.22.6.104:27021");
 sh.status();
@@ -73,19 +75,19 @@ Ejecutar comando desde una instancia dentro de la replica respectiva
 
 ### Moravia
 
-`rs.addArb("172.22.124.8:27019")`
+`rs.addArb("172.22.124.8:27022")`
 
 ### Coronado
 
-`rs.addArb("172.22.135.232:27020")`
+`rs.addArb("172.22.6.104:27020")`
 
 ### Cartago
 
-`rs.addArb("172.22.6.104:27021")`
+`rs.addArb("172.22.10.26:27021")`
 
 ## Configuracion del Shard
 
-Ejecutar desde una instancia de la replica de router
+Ejecutar desde cada instancia de routing
 
 Indico cual va a ser la base de datos que va a soportar sharding
 
