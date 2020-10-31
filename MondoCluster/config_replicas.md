@@ -77,11 +77,11 @@ Ejecutar comando desde una instancia dentro de la replica respectiva
 
 ### Coronado
 
-`rs.addArb("172.22.135.232:27020")`
+`rs.addArb("172.22.6.104:27020")`
 
 ### Cartago
 
-`rs.addArb("172.22.6.104:27021")`
+`rs.addArb("172.22.10.26:27021")`
 
 ## Configuracion del Shard
 
