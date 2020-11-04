@@ -91,11 +91,11 @@ Ejecutar desde cada instancia de routing
 
 Indico cual va a ser la base de datos que va a soportar sharding
 
-`sh.enableSharding("Alertme");`
+`sh.enableSharding("alertme");`
 
 Luego el collection y el campo del collection que va servir como shardkey
 
-`sh.shardCollection("Alertme.coordenadas", { canton : "hashed" } );`
+`sh.shardCollection("alertme.coordenadas", { canton : "hashed" } );`
 
 
 ### Rangos de shards
@@ -114,7 +114,7 @@ sh.addShardToZone("alertme_cartago","Cartago")
 
 ```javascript
 sh.updateZoneKeyRange(
-"Alertme.coordenadas",
+"alertme.coordenadas",
 {canton: "Moravia"},
 {canton: "Moravia_"},
 "Moravia"
@@ -125,7 +125,7 @@ sh.updateZoneKeyRange(
 
 ```javascript
 sh.updateZoneKeyRange(
-"Alertme.coordenadas",
+"alertme.coordenadas",
 {canton: "Coronado"},
 {canton: "Coronado_"},
 "Coronado"
@@ -136,7 +136,7 @@ sh.updateZoneKeyRange(
 
 ```javascript
 sh.updateZoneKeyRange(
-"Alertme.coordenadas",
+"alertme.coordenadas",
 {canton: "Cartago"},
 {canton: "Cartago_"},
 "Cartago"
@@ -145,4 +145,4 @@ sh.updateZoneKeyRange(
 
 * Shard Collection
 
-`sh.shardCollection("Alertme.coordenadas",  { canton: 1 } );`
+`sh.shardCollection("alertme.coordenadas",  { canton: 1 } );`
