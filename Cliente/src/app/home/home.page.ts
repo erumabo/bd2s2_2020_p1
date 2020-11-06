@@ -41,6 +41,15 @@ export class HomePage {
     fetch(req).then(res=>{ // yay!! Promises!!
       if(res.status==200){
         console.log(res.json())
+        document.getElementById("set-card").style.display = "none";
+        document.getElementById("timer-card").style.display = "block";
+        this.minutos = +this.tiempo;
+        this.segundos = 0;
+        document.getElementById("timer").innerHTML = (''+this.minutos).padStart(2,'0')+':'+(''+this.segundos).padStart(2,'0')
+        this.tiempo = this.minutos * 60 + this.segundos;
+        console.log(this.minutos, this.segundos);
+        this.timer = setInterval(this.intervalHandle,1000,this);
+        setTimeout(this.timeoutHandle,this.minutos*60*1000,this)
       } else {
         throw new Error('Server Error');
       }
@@ -52,16 +61,7 @@ export class HomePage {
       }).then(alt=>alt.present().catch(err=>console.error('Error con el alert',err)));
       console.error(err)
     });
-    this.guid = "1234567890abcdef";
-        document.getElementById("set-card").style.display = "none";
-        document.getElementById("timer-card").style.display = "block";
-        this.minutos = +this.tiempo;
-        this.segundos = 0;
-        document.getElementById("timer").innerHTML = (''+this.minutos).padStart(2,'0')+':'+(''+this.segundos).padStart(2,'0')
-        this.tiempo = this.minutos * 60 + this.segundos;
-        console.log(this.minutos, this.segundos);
-        this.timer = setInterval(this.intervalHandle,1000,this);
-        setTimeout(this.timeoutHandle,this.minutos*60*1000,this)
+    //this.guid = "1234567890abcdef";
   }
 
   intervalHandle(self:HomePage) {
