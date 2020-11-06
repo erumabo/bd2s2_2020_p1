@@ -1,10 +1,20 @@
 import express from 'express';
+import confirmationPin from '../API/mongoDriver';
 
 const PORT = 9000;
 const app = express();
 
-app.get('/',(r,s,n)=>{
+
+app.use(express.json());
+app.use(express.urlencoded());
+
+app.get('/hola',(r,s,n)=>{
   s.send('Hola Mundo');
+})
+
+app.post('/validatePIN',(r,s,n)=>{
+  confirmationPin(r.body.GUID,r.body.pin)
+  s.send(true);
 })
 
 app.listen(PORT,()=>{
