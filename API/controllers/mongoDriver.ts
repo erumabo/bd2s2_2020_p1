@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 
-
 export default function confirmationPIN(GUID : String, pin : number){
     console.log("He recibido por GUID Y PIN: " + GUID + "   "+pin );
     checkPIN(GUID,pin);

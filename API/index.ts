@@ -1,5 +1,5 @@
 import express from 'express';
-import confirmationPin from '../API/mongoDriver';
+import confirmationPin from './controllers/mongoDriver';
 
 const PORT = 9000;
 const app = express();
