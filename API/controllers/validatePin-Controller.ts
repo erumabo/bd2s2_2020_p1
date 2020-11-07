@@ -1,6 +1,6 @@
 import mongoDriver from './mongoDriver'
 
-export default function validatePinController(guid : String, pin : number){
+function validatePinController(guid : string, pin : number){
     console.log("He recibido por GUID Y PIN: " + guid + "   "+pin );
     var conditions = { guid: guid }
       , update = { estado : true }
@@ -15,3 +15,4 @@ export default function validatePinController(guid : String, pin : number){
       }).catch((err:Error)=>console.error(err));
 }
 
+export { validatePinController };
