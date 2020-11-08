@@ -10,36 +10,36 @@ export default class mongoDriver {
     this.connectMongo();
   }
 
-  private async connectMongo(){
-    try {
-      await mongoose.connect('mongodb://172.22.124.8:27018/alertme',         //cambiar direccion IP
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        socketTimeoutMS: 2000
-
-      })
-      
-    } catch(err) {
-      console.error("Error coneccion inicial",err)
-    }
+  private connectMongo(){
     mongoDriver.Users = mongoose.model('users',
-        new Schema({
+      new Schema({
+        guid : String,
+        pin : Number,
+        tiempo_seg : Number,
+        estado : String
+      })
+    );
+    mongoDriver.Coordenadas = mongoose.model('Coordenadas',
+      new Schema({
           guid : String,
-          pin : Number,
-          tiempo_seg : Number,
-          estado : String
-        })
-      );
-      mongoDriver.Coordenadas = mongoose.model('Coordenadas',
-        new Schema({
-            guid : String,
-            lat: mongoose.Decimal128,
-            long:  mongoose.Decimal128,
-            canton: String,
-            datetime: { type: Date, default: Date.now }
-        })
-      );
+          lat: mongoose.Decimal128,
+          long:  mongoose.Decimal128,
+          canton: String,
+          datetime: { type: Date, default: Date.now }
+      })
+    );
+    mongoose.connect('mongodb://172.22.124.8:27018',         //cambiar direccion IP
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      socketTimeoutMS: 2000,
+      dbName: "alertme"
+    })
+    .then(()=>{
+      console.log("Connection Succesfull");
+    }).catch((err:Error) =>{
+    console.error("Error coneccion inicial",err)
+    });
 
     mongoose.connection.on('error', () => {
         console.log("No puedo conectar a mongo")
@@ -51,11 +51,13 @@ export default class mongoDriver {
   }
 
   public static getUsers() {
-    return this.Users?this.Users:((this.instance=new mongoDriver()),this.Users);
+    if(!this.Users) this.instance=new mongoDriver()
+    return this.Users;
   }
 
   public static getCoordenadas() {
-    return this.Coordenadas?this.Coordenadas:((this.instance=new mongoDriver()),this.Coordenadas);
+    if(!this.Coordenadas) this.instance=new mongoDriver()
+    return this.Coordenadas;
   }
 
 }
