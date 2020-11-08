@@ -1,6 +1,7 @@
-import {Coordenadas} from './locationsScheme'
+import mongoDriver from './mongoDriver'
+const Coordenadas = mongoDriver.getCoordenadas();
 
-
+import geolocation from './geolocation';
 
 export default function registerLocationController(lat : any, long : any, guid : any){
     
@@ -10,13 +11,9 @@ export default function registerLocationController(lat : any, long : any, guid :
 
     //Función para extraer con la API de gmaps el cantón con la latitud y longitud dada.
     function getLocation(lat : any, long : any, guid : any){
-
-        //Averiguar el canton y llamar a registerLocation()
-        var canton : String;
-
-        canton = "prueba";
-
-        registerLocation(lat, long, guid, canton);
+        geolocation( lat , long ).then((canton:string)=>{
+          registerLocation(lat, long, guid, canton);
+        });
     }
 
     //Función que inserta en la collection el documento con la información dada.
