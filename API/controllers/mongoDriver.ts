@@ -27,7 +27,7 @@ export default class mongoDriver {
           guid : String,
           pin : Number,
           tiempo_seg : Number,
-          estado : Boolean
+          estado : String
         })
       );
       mongoDriver.Coordenadas = mongoose.model('Coordenadas',
