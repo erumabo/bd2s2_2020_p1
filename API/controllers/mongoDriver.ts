@@ -12,14 +12,18 @@ export default class mongoDriver {
 
   private async connectMongo(){
     try {
-      await mongoose.connect('mongodb://localhost:27018/alertOnMe',         //cambiar direccion IP
+      await mongoose.connect('mongodb://172.22.124.8:27018/alertme',         //cambiar direccion IP
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         socketTimeoutMS: 2000
 
       })
-      mongoDriver.Users = mongoose.model('users',
+      
+    } catch(err) {
+      console.error("Error coneccion inicial",err)
+    }
+    mongoDriver.Users = mongoose.model('users',
         new Schema({
           guid : String,
           pin : Number,
@@ -36,9 +40,7 @@ export default class mongoDriver {
             datetime: { type: Date, default: Date.now }
         })
       );
-    } catch(err) {
-      console.error("Error coneccion inicial",err)
-    }
+
     mongoose.connection.on('error', () => {
         console.log("No puedo conectar a mongo")
     });
@@ -57,3 +59,4 @@ export default class mongoDriver {
   }
 
 }
+

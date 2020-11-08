@@ -1,7 +1,8 @@
-import {Coordenadas} from './mongoDriver';
+import mongoDriver from './mongoDriver';
 
 import geolocation from './geolocation';
 
+const Coordenadas = mongoDriver.getCoordenadas();
 export default function registerLocationController(lat : any, long : any, guid : any){
     
     getLocation(lat, long, guid);
