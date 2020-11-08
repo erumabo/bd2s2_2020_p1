@@ -1,5 +1,4 @@
-import mongoDriver from './mongoDriver'
-const Coordenadas = mongoDriver.getCoordenadas();
+import {Coordenadas} from './mongoDriver';
 
 import geolocation from './geolocation';
 
@@ -13,7 +12,7 @@ export default function registerLocationController(lat : any, long : any, guid :
     function getLocation(lat : any, long : any, guid : any){
         geolocation( lat , long ).then((canton:string)=>{
           registerLocation(lat, long, guid, canton);
-        });
+        }).catch(error => console.error(error));
     }
 
     //Función que inserta en la collection el documento con la información dada.

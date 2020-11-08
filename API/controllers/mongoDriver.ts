@@ -30,15 +30,8 @@ export default class mongoDriver {
           estado : String
         })
       );
-      mongoDriver.Coordenadas = mongoose.model('Coordenadas',
-        new Schema({
-            guid : String,
-            lat: Float32Array,
-            long: Float32Array,
-            canton: String,
-            datetime: { type: Date, default: Date.now }
-        })
-      );
+      mongoDriver.Coordenadas
+      
 
     });
   }
@@ -57,3 +50,12 @@ export default class mongoDriver {
 
 }
 
+const Coordenadas = mongoose.model('Coordenadas',
+new Schema({
+    guid : String,
+    lat: mongoose.Decimal128,
+    long:  mongoose.Decimal128,
+    canton: String,
+    datetime: { type: Date, default: Date.now }
+}));
+export {Coordenadas};
