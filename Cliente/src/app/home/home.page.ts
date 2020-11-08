@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
-const apiURL :string = 'http://localhost:9000';
+const apiURL :string = 'http://172.22.124.8:9000';
 const endpoints = {
   loc :'/registerLocation',
-  guid:'/generarguid',
+  guid:'/',
   pin :'/validatePin'
 }
 
