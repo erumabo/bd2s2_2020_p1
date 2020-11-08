@@ -10,18 +10,15 @@ export default class mongoDriver {
     this.connectMongo();
   }
 
-  private connectMongo(){
-    mongoose.connect('mongodb://localhost:27017/alertOnMe',         //cambiar direccion IP
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      socketTimeoutMS: 2000
+  private async connectMongo(){
+    try {
+      await mongoose.connect('mongodb://localhost:27018/alertOnMe',         //cambiar direccion IP
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        socketTimeoutMS: 2000
 
-    }).catch((err:any)=>console.error("Error coneccion inicial",err));
-    mongoose.connection.on('error', () => {
-        console.log("No puedo conectar a mongo")
-    });
-    mongoose.connection.once('open', ()=> {
+      })
       mongoDriver.Users = mongoose.model('users',
         new Schema({
           guid : String,
@@ -30,9 +27,20 @@ export default class mongoDriver {
           estado : String
         })
       );
-      mongoDriver.Coordenadas
-      
-
+      mongoDriver.Coordenadas = mongoose.model('Coordenadas',
+        new Schema({
+            guid : String,
+            lat: mongoose.Decimal128,
+            long:  mongoose.Decimal128,
+            canton: String,
+            datetime: { type: Date, default: Date.now }
+        })
+      );
+    } catch(err) {
+      console.error("Error coneccion inicial",err)
+    }
+    mongoose.connection.on('error', () => {
+        console.log("No puedo conectar a mongo")
     });
   }
 
@@ -49,13 +57,3 @@ export default class mongoDriver {
   }
 
 }
-
-const Coordenadas = mongoose.model('Coordenadas',
-new Schema({
-    guid : String,
-    lat: mongoose.Decimal128,
-    long:  mongoose.Decimal128,
-    canton: String,
-    datetime: { type: Date, default: Date.now }
-}));
-export {Coordenadas};
