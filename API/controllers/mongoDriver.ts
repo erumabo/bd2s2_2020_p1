@@ -1,51 +1,59 @@
-var mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const { Schema,Model } = mongoose;
 
+export default class mongoDriver {
+  private static instance:mongoDriver;
+  private static Users:typeof Model;
+  private static Coordenadas:typeof Model;
 
-export default function confirmationPIN(GUID : String, pin : number){
-    console.log("He recibido por GUID Y PIN: " + GUID + "   "+pin );
-    checkPIN(GUID,pin);
-}
-
-function connectMongo(){
-    mongoose.connect('mongodb://localhost:27017/alertOnMe',         //cambiar direccion IP
-                {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                socketTimeoutMS: 2000
-
-                });
-    var db = mongoose.connection;
-
-    db.on('error', () => {
-        console.log("No puedo conectar a mongo")
-        });
-    db.once('open', ()=> {
-        console.log("Conectado a mongo")
-    });
-}
-
-async function checkPIN(guid : String , pin : number) {
-    var conditions = { guid: guid }
-  , update = { estado : true }
-  , options = { multi: false };
-
-    connectMongo();
-  
-    const users = mongoose.model('users',
-                    new Schema({
-                        guid : String,
-                        pin : Number,
-                        tiempo_seg : Number,
-                        estado : Boolean
-    }));
-
-    const docs = await users.find({guid: guid});
-    if(pin === docs[0].pin){
-        await users.update(conditions,update,options,(err : any, numAffected : number) => {})
-    }
-    const docs1 = await users.find({guid: guid});
-    console.log(docs1);
+  private constructor() {
+    this.connectMongo();
   }
 
-  
+  private connectMongo(){
+    mongoose.connect('mongodb://localhost:27017/alertOnMe',         //cambiar direccion IP
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      socketTimeoutMS: 2000
+
+    }).catch((err:any)=>console.error("Error coneccion inicial",err));
+    mongoose.connection.on('error', () => {
+        console.log("No puedo conectar a mongo")
+    });
+    mongoose.connection.once('open', ()=> {
+      mongoDriver.Users = mongoose.model('users',
+        new Schema({
+          guid : String,
+          pin : Number,
+          tiempo_seg : Number,
+          estado : Boolean
+        })
+      );
+      mongoDriver.Coordenadas = mongoose.model('Coordenadas',
+        new Schema({
+            guid : String,
+            lat: Float32Array,
+            long: Float32Array,
+            canton: String,
+            datetime: { type: Date, default: Date.now }
+        })
+      );
+
+    });
+  }
+
+  public static getInstance() {
+    return this.instance?this.instance:(this.instance=new mongoDriver());
+  }
+
+  public static getUsers() {
+    return this.Users?this.Users:((this.instance=new mongoDriver()),this.Users);
+  }
+
+  public static getCoordenadas() {
+    return this.Coordenadas?this.Coordenadas:((this.instance=new mongoDriver()),this.Coordenadas);
+  }
+
+}
+

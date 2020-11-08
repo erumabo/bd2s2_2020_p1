@@ -1,4 +1,3 @@
-
 import {Coordenadas} from './locationsScheme'
 
 

@@ -12,4 +12,4 @@ app.post("/registerLocation", (req, res, next) => { //POST registrar Localizaci√
 
 });
 
-export { app as registerlocationRouter };
+export { app as registerLocationRouter };
