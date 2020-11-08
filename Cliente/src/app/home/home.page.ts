@@ -35,7 +35,7 @@ export class HomePage {
   ) {}
 
   setAlerta() {
-    const req = new Request( `${apiURL}${endpoints.guid}?pin=${this.pin}`, {
+    const req = new Request( `${apiURL}${endpoints.guid}?pin=${this.pin}&tiempo=${+this.tiempo}`, {
       method: 'GET'
     });
     fetch(req).then(res=>{ // yay!! Promises!!
