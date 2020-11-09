@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
-const apiURL :string = 'http://localhost:8080';
+const apiURL :string = 'http://172.22.124.8:9000';
 const endpoints = {
-  loc :'/registrarloc',
-  guid:'/generarguid',
-  pin :'/confirmarpin'
+  loc :'/registerLocation',
+  guid:'/',
+  pin :'/validatePin'
 }
 
 @Component({
@@ -35,7 +35,7 @@ export class HomePage {
   ) {}
 
   setAlerta() {
-    const req = new Request( `${apiURL}${endpoints.guid}?pin=${this.pin}`, {
+    const req = new Request( `${apiURL}${endpoints.guid}?pin=${this.pin}&tiempo=${+this.tiempo}`, {
       method: 'GET'
     });
     fetch(req).then(res=>{ // yay!! Promises!!
