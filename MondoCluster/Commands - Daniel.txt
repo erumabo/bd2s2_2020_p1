@@ -1,0 +1,28 @@
+--------------------------------------------
+Comandos para crear las maquinas/containers
+--------------------------------------------
+Configuracion de las instancias en config_replicas.md
+
+--------------------------------------------
+Config Server Bravo 172.22.10.26:27017
+--------------------------------------------
+docker run -d -p 27017:27017 --name bravo mongo mongod --port 27017 --configsvr --replSet alertme_cfg --dbpath /data/configdb
+
+Conectar
+    docker exec -it bravo mongo --port 27017
+
+--------------------------------------------
+Shard Ekko 172.22.10.26:27022
+--------------------------------------------
+docker run -d -p 27022:27022 --name ekko mongo mongod --port 27022 --replSet alertme_moravia --shardsvr
+
+Conectar
+    docker exec -it ekko mongo --port 27022
+
+--------------------------------------------
+Arbitro Lima (Repl.Cartago) 172.22.10.26:27021
+--------------------------------------------
+docker run -d -p 27021:27021 --name lima mongo mongod --port 27021 --replSet alertme_cartago
+
+Conectar
+    docker exec -it lima mongo --port 27021
