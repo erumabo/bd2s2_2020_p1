@@ -1,0 +1,82 @@
+
+- - - - - - - - - - - - - - - - - - - - - - 
+// Foxtrox  :    172.22.135.232:27022 
+- - - - - - - - - - - - - - - - - - - - - - 
+//  Creo el shard 
+docker run -d -p 27022:27022 --ip 172.22.135.232 --name Foxtrox mongo mongod --port 27022 --shardsvr --replSet alertme_moravia
+
+//  Entro al server
+docker exec -it Foxtrox bash
+mongo --port 27022
+
+rs.initiate({
+  _id:"alertme_moravia",
+  members: [
+    {_id:0,host:"172.22.10.26:27019"},
+    {_id:1,host:"172.22.135.232:27019"}
+  ]
+})
+
+
+- - - - - - - - - - - - - - - - - - - - - - 
+// India  :    172.22.135.232:27020
+- - - - - - - - - - - - - - - - - - - - - - 
+//  Creo el shard 
+docker run -d -p 27020:27020 --ip 172.22.135.232 --name India mongo mongod --port 27020 --shardsvr --replSet alertme_coronado
+
+//  Entro al server
+docker exec -it India bash
+mongo --port 27020
+
+rs.initiate({
+  _id:"alertme_coronado",
+  members: [
+    {_id:0,host:"172.22.135.232:27020"},
+    {_id:1,host:"172.22.124.8:27020"}
+  ]
+})
+
+- - - - - - - - - - - - - - - - - - - - - - 
+// Charlie  :    172.22.135.232:27018
+- - - - - - - - - - - - - - - - - - - - - - 
+// Crear el router
+docker run -d -p 27018:27018 --ip 172.22.135.232 --name Charlie mongo mongos --port 27018 --configdb alertme_cfg/172.22.6.104:27017,172.22.10.26:27017
+
+docker exec -it Charlie bash
+mongo --port 27018
+
+sh.addShard( "alertme_moravia/172.22.10.26:27022");
+sh.addShard( "alertme_coronado/172.22.135.232:27020");
+sh.addShard( "alertme_cartago/172.22.6.104:27021");
+sh.status();
+
+-------- Configuración de los shards
+
+sh.addShardToZone("alertme_moravia","Moravia")
+sh.addShardToZone("alertme_coronado","Coronado")
+sh.addShardToZone("alertme_cartago","Cartago")
+
+
+Rango Moravia
+sh.updateZoneKeyRange(
+"Alertme.coordenadas",
+{canton: "Moravia"},
+{canton: "Moravia_"},
+"Moravia"
+)
+
+Rango Coronado
+sh.updateZoneKeyRange(
+"Alertme.coordenadas",
+{canton: "Coronado"},
+{canton: "Coronado_"},
+"Coronado"
+)
+
+Rango Cartago
+sh.updateZoneKeyRange(
+"Alertme.coordenadas",
+{canton: "Cartago"},
+{canton: "Cartago_"},
+"Cartago"
+)

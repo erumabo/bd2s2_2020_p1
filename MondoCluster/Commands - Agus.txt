@@ -1,0 +1,43 @@
+
+---------------------------------------
+Para los servers
+---------------------------------------
+
+
+Crear Config server--------------------
+
+
+docker run -d -p 27017:27017 --ip 172.22.6.104 --name Alfa  mongo mongod --port 27017 --configsvr --replSet "alertme_cfg" --dbpath /data/configdb
+
+//-e MONGO_INITDB_ROOT_USERNAME=config  -e MONGO_INITDB_ROOT_PASSWORD=config (No se usó)
+
+
+Crear árbitro--------------------------
+
+
+docker run -d -p 27020:27020 --ip 172.22.6.104 --name Hotel  mongo mongod --port 27020 --replSet alertme_coronado
+
+
+//-e MONGO_INITDB_ROOT_USERNAME=coronado  -e MONGO_INITDB_ROOT_PASSWORD=coronado (No se usó)
+
+Crear Server---------------------------
+
+
+docker run -d -p 27021:27021 --ip 172.22.6.104 --name Kilo  mongo mongod  --port 27021 --shardsvr --replSet "alertme_cartago"
+
+
+//-e MONGO_INITDB_ROOT_USERNAME=cartaguito  -e MONGO_INITDB_ROOT_PASSWORD=campeon (No se usó)
+
+
+mongo --port 27019
+
+
+
+
+
+
+
+
+
+
+
