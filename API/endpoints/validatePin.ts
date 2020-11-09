@@ -6,7 +6,10 @@ const app = express();
 
 app.put("/validatePin", (req, res, next) => { //PUT validar pin ? guid=string body.pin=number
     validatePinController(<string>req.query['guid'], <number>req.body['pin']);
-    res.send(true);
+    res.send({
+      status: 202,
+      message: "Request procesado"
+    });
 });
 
 export { app as validatePinRouter };

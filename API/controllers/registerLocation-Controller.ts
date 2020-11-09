@@ -1,11 +1,10 @@
 import mongoDriver from './mongoDriver';
+const Coordenadas = mongoDriver.getCoordenadas();
 
 import geolocation from './geolocation';
 
-const Coordenadas = mongoDriver.getCoordenadas();
 export default function registerLocationController(lat : any, long : any, guid : any){
-    
-    getLocation(lat, long, guid);
+   getLocation(lat, long, guid);
 
 }
 
@@ -13,7 +12,7 @@ export default function registerLocationController(lat : any, long : any, guid :
     function getLocation(lat : any, long : any, guid : any){
         geolocation( lat , long ).then((canton:string)=>{
           registerLocation(lat, long, guid, canton);
-        }).catch(error => console.error(error));
+        });
     }
 
     //Función que inserta en la collection el documento con la información dada.
@@ -39,22 +38,15 @@ export default function registerLocationController(lat : any, long : any, guid :
             newLocation.save( (err: any, post: any) => {
                 if (err)
                 {
-                    console.log(err);
+                    console.log("Error salvando ::", err);
+                    throw err;
                 }
             });
 
         }
         catch(e)
         {
-            console.log(e);
+            console.log("Error creando documento ::", e);
+            throw e;
         }
-
-
-
-
     }
-
-
-
-
-
