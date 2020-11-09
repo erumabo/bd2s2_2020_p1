@@ -1,0 +1,42 @@
+---------------------------------
+Julliet
+---------------------------------
+Creacion del shard
+    docker run -d --ip 172.22.124.8 --name Juliett  mongo mongod --port 27020 --shardsvr --replSet "alertme_coronado" 
+
+Ejecucion
+    docker exec -it Juliett bash
+    mongo --port 27020 
+
+---------------------------------
+Mike
+---------------------------------
+Creacion del shard
+    docker run -d --ip 172.22.124.8 --name Mike  mongo mongod --port 27021 --shardsvr --replSet "alertme_cartago" 
+
+Ejecucion
+    docker exec -it Mike bash
+    mongo --port 27021 
+
+---------------------------------
+Golf
+---------------------------------
+
+Creacion del arbitro
+    docker run -d -p 27022 --ip 172.22.124.8 --name Golf mongo mongod --port 27022 --replSet alertme_moravia
+
+Ejecucion
+    docker exec -it Golf bash
+    mongo --port 27022 
+
+
+---------------------------------
+Delta
+---------------------------------
+
+Creacion del router
+    docker run -d -p 27018:27018 --name Delta mongo mongos --port 27018 --configdb alertme_cfg/172.22.6.104:27017,172.22.10.26:27017 --bind_ip_all
+
+Ejecucion
+    docker exec -it Delta bash
+    mongo --port 27018
