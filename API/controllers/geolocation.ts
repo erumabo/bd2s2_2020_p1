@@ -23,6 +23,14 @@ export default function geolocation( lat:number, long:number) : Promise<string>{
     if( res.data.status != Status.OK) throw new Error("Canton no encontrado");
     const locations: { administrative_area_level_2:string|undefined, locality:string|undefined } 
         = { administrative_area_level_2:undefined, locality:undefined };
+/*  for(let curr of res.data.results){
+      for(let c of curr.address_components){
+          if(c.types.includes(AddressType.administrative_area_level_2))
+             locations.administrative_area_level_2 = c.long_name;
+          if(c.types.includes(AddressType.locality))
+             locations.locality = c.long_name;
+      }
+    }*/
     res.data.results.reduce((acc,curr)=>
         curr.address_components.reduce((a,c)=>{
           if(c.types.includes(AddressType.administrative_area_level_2))

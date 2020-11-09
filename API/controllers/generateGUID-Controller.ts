@@ -1,9 +1,9 @@
 import mongoDriver from './mongoDriver'
 const Users = mongoDriver.getUsers();
 
-function generateGUIDcontroller(pin : Number, tiempo_seg : Number) : string{
+function generateGUIDcontroller(pin : Number, tiempo_seg : Number) : string {
     try {
-        const guid = Date.now();
+        const guid = ''+Date.now();
         const newUser = new Users({
             guid: guid,
             pin: pin,
@@ -18,7 +18,7 @@ function generateGUIDcontroller(pin : Number, tiempo_seg : Number) : string{
                 throw err;
             }
         });
-        return ''+guid; 
+        return guid; 
     }
     catch(e)
     {

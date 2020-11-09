@@ -18,7 +18,6 @@ app.post("/registerLocation", (req, res, next) => { //POST registrar Localizaci√
         message: "Error al procesar request"
       });
     }
-
 });
 
 export { app as registerLocationRouter };

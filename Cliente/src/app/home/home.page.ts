@@ -49,7 +49,7 @@ export class HomePage {
         this.segundos = 0;
         document.getElementById("timer").innerHTML = (''+this.minutos).padStart(2,'0')+':'+(''+this.segundos).padStart(2,'0')
         this.tiempo = this.minutos * 60 + this.segundos;
-        console.log(this.minutos, this.segundos);
+        console.log(`Alarma :: ${this.minutos}:${this.segundos}`);
         this.timer = setInterval(this.intervalHandle,1000,this);
         setTimeout(this.timeoutHandle,this.minutos*60*1000,this)
     }).catch(err=>{
@@ -72,7 +72,7 @@ export class HomePage {
     self.countdown++;
     if(self.countdown == 5) {
       self.geolocation.getCurrentPosition().then(loc=>self.locationSend(loc,self.guid))
-        .catch((error) => console.log('Error getting location', error) );
+        .catch((error) => console.error('Error getting location', error) );
       self.countdown = 0;
     }
 
@@ -98,9 +98,8 @@ export class HomePage {
         text:"Confirmar",
         handler: (alertData)=>{
           console.log(alertData.cpin);
-          const req = new Request( `${apiURL}${endpoints.pin}?guid=${self.guid}`, {
-            method: 'PUT',
-            body: `{"pin":"${alertData.cpin}"}`
+          const req = new Request( `${apiURL}${endpoints.pin}?guid=${self.guid}&pin=${+alertData.cpin}`, {
+            method: 'GET',
           });
           fetch(req)
             .then(res=>{})
@@ -119,7 +118,7 @@ export class HomePage {
       method: 'POST'
     });
     fetch(req)
-      .then(res=>{if(res.status==202) return res.json()})
+      .then(res=>{if(res.status==201) return res.json()})
       .then(data=>{ console.log(data) })
       .catch(err=>console.error(err));
   }

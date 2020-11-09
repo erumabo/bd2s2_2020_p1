@@ -4,10 +4,10 @@ import { validatePinController } from '../controllers/validatePin-Controller'
 
 const app = express();
 
-app.put("/validatePin", (req, res, next) => { //PUT validar pin ? guid=string body.pin=number
-  console.log(`Validar PIN para ${req.query['guid']} -> ${req.body['pin']}`);
+app.get("/validatePin", (req, res, next) => { //PUT validar pin ? guid=string & pin=number
+    console.log(`Validar PIN para ${req.query['guid']} -> ${req.query['pin']}`);
+    validatePinController(<string>req.query['guid'], +(req.query['pin']||0));
     res.set('Access-Control-Allow-Origin','*');
-    validatePinController(<string>req.query['guid'], <number>req.body['pin']);
     res.status(202).send({
       message: "Request procesado"
     });

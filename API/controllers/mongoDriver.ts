@@ -30,7 +30,7 @@ export default class mongoDriver {
       })
     );
 
-    mongoose.connect('mongodb://172.22.124.8:27018',         //cambiar direccion IP
+    mongoose.connect('mongodb://172.22.135.232:27018,172.22.124.8:27018',         //cambiar direccion IP
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
