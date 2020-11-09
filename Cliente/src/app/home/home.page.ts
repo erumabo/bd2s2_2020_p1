@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
-const apiURL :string = 'http://172.22.124.8:9000';
+const apiURL :string = 'http://localhost:9000';
 const endpoints = {
   loc :'/registerLocation',
-  guid:'/',
+  guid:'/generateGUID',
   pin :'/validatePin'
 }
 
@@ -35,12 +35,14 @@ export class HomePage {
   ) {}
 
   setAlerta() {
-    const req = new Request( `${apiURL}${endpoints.guid}?pin=${this.pin}&tiempo=${+this.tiempo}`, {
+    console.log(" :: ALERTA :: ",`${apiURL}${endpoints.guid}?pin=${+this.pin}&tiempo=${+this.tiempo}`);
+    const req = new Request( `${apiURL}${endpoints.guid}?pin=${+this.pin}&tiempo=${+this.tiempo}`, {
       method: 'GET'
     });
-    fetch(req).then(res=>{ // yay!! Promises!!
-      if(res.status==200){
-        console.log(res.json())
+    fetch(req).then(res=> {
+      if(res.status==200) return res.json()
+    }).then( data => {
+        this.guid = data.guid;
         document.getElementById("set-card").style.display = "none";
         document.getElementById("timer-card").style.display = "block";
         this.minutos = +this.tiempo;
@@ -50,18 +52,14 @@ export class HomePage {
         console.log(this.minutos, this.segundos);
         this.timer = setInterval(this.intervalHandle,1000,this);
         setTimeout(this.timeoutHandle,this.minutos*60*1000,this)
-      } else {
-        throw new Error('Server Error');
-      }
     }).catch(err=>{
+      console.log(err);
       this.alertController.create({
         header: 'Error',
         message: 'Ha ocurrido un error al comunicarse con el servidor\nPor favor intente más tarde',
         buttons: ['Aceptar']
       }).then(alt=>alt.present().catch(err=>console.error('Error con el alert',err)));
-      console.error(err)
     });
-    //this.guid = "1234567890abcdef";
   }
 
   intervalHandle(self:HomePage) {
@@ -104,9 +102,8 @@ export class HomePage {
             method: 'PUT',
             body: `{"pin":"${alertData.cpin}"}`
           });
-          // por especificacion no deberíamos de registrar ni mostrar nada de eso al usuario
           fetch(req)
-            .then(res=>console.log(res.json()))
+            .then(res=>{})
             .catch(err=>console.error(err))
             .finally(()=>{
               document.getElementById("set-card").style.display = "block";
@@ -121,12 +118,9 @@ export class HomePage {
     const req = new Request( `${apiURL}${endpoints.loc}?lat=${loc.coords.latitude}&long=${loc.coords.longitude}&guid=${guid}`, {
       method: 'POST'
     });
-    fetch(req).then(res=>{
-      if(res.status==202){
-        console.log(res.json())
-      } else {
-        throw new Error('Server Error');
-      }
-    }).catch(err=>console.error(err));
+    fetch(req)
+      .then(res=>{if(res.status==202) return res.json()})
+      .then(data=>{ console.log(data) })
+      .catch(err=>console.error(err));
   }
 }
