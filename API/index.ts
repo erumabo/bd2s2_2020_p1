@@ -14,6 +14,7 @@ app.use(generateGUIDRouter);
 app.use(registerLocationRouter);
 app.use(validatePinRouter);
 
+
 app.listen(PORT,()=>{
   console.log('Server escuchando en el puerto ',PORT);
 });
