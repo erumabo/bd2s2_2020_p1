@@ -6,16 +6,16 @@ const app = express();
 
 app.get("/generateGUID", (req, res,next) => {
 //GET generate pin ? guid=string & pin=number
+  console.log(`Generar nuevo GUID`);
+  res.set('Access-Control-Allow-Origin','*');
   try {
     const guid = generateGUIDcontroller(+(req.query['pin']||0), +(req.query['tiempo']||0)); 
-    res.send({
-      status: 200,
+    res.status(200).send({
       guid: guid
     });
     //res.send(error)->json con el cod del error dentro
    } catch(err) {
-     res.send({
-       status: 500,
+     res.status(500).send({
        error: err
      })
    }
