@@ -22,7 +22,9 @@
   "homepage": "https://github.com/erumabo/bd2s2_2020_p1#readme",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.1.13",
+    "d3-node": "^2.2.2",
     "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
     "mongoose": "^5.10.11"
   },
   "devDependencies": {
