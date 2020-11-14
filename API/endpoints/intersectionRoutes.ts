@@ -1,13 +1,17 @@
 import express from 'express';
 
-import { getIntersectionRoutes } from '../controllers/getIntersectionRoutes'
+import { getIntersectionRoutes } from '../controllers/getIntersectionRoutes';
+import { visualMap } from '../controllers/visuals';
 
 const app = express();
 
 app.get('/getIntersectionsRoutes', (req,res,next) => {
     console.log(`He obtenido el canton ${req.query['canton']}`)
-    getIntersectionRoutes(""+req.query['canton']);
-    res.send("Query succesfly");
+    getIntersectionRoutes(""+req.query['canton'])
+      .then((locations:any)=> {
+        res.render("index",{svg : visualMap(locations)})
+      });
+    //res.send("Query succesfly");
 })
 
 

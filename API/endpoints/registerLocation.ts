@@ -13,7 +13,7 @@ app.post("/registerLocation", (req, res, next) => { //POST registrar Localizaci√
       res.status(201).send({
         message: "Insertion successful."
       });
-    } catch {
+    } catch (err){
       res.status(500).send({
         message: "Error al procesar request"
       });
