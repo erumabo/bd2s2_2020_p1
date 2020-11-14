@@ -39,7 +39,6 @@ function registerLocation(lat : any, long : any, guid : any, canton : any){
             if (err)
             {
                 console.error("Error salvando ::", err);
-                //throw err;
             }
         });
 
@@ -47,6 +46,5 @@ function registerLocation(lat : any, long : any, guid : any, canton : any){
     catch(e)
     {
         console.error("Error creando documento ::", e);
-        //throw e;
     }
 }

@@ -8,16 +8,10 @@ app.post("/registerLocation", (req, res, next) => { //POST registrar LocalizaciÃ
   console.log(`Registrar Locacion para GUID::${req.query['guid']} -> (${req.query['lat']},${req.query['long']})`);
 
     res.set('Access-Control-Allow-Origin','*');
-    try {
-      registerLocationController(req.query.lat, req.query.long, req.query.guid);
-      res.status(201).send({
-        message: "Insertion successful."
-      });
-    } catch (err){
-      res.status(500).send({
-        message: "Error al procesar request"
-      });
-    }
+    registerLocationController(req.query.lat, req.query.long, req.query.guid);
+    res.status(201).send({
+      message: "Insertion successful."
+    });
 });
 
 export { app as registerLocationRouter };
