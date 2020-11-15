@@ -1,11 +1,11 @@
-import { mongo } from 'mongoose';
+//import { mongo } from 'mongoose';
 import mongoDriver from './mongoDriver'
 
 export function getClusterHoras(canton : any){
     
     console.log("Consultar Horarios");
 
-    mongoDriver.getCoordenadas().aggregate([
+    return mongoDriver.getCoordenadas().aggregate([
         {
             $match : {
                 "canton" : canton
@@ -28,9 +28,11 @@ export function getClusterHoras(canton : any){
         {
             $sort : {"total" : -1}
         }
-        ]).exec(function(err : any, docs : any) {
-            if (err) throw err;
-                console.log(docs);
-        });
+        ])
+        .then((docs:any)=>{
+          console.log(docs)
+          return docs;
+        })
+        .catch((err:any)=>console.error(err));
 
 }

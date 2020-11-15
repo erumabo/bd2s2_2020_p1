@@ -5,6 +5,7 @@ import { validatePinRouter } from './endpoints/validatePin';
 import { registerLocationRouter } from './endpoints/registerLocation';
 import { generateGUIDRouter } from './endpoints/generateGUID';
 import { intersectionRoutes } from './endpoints/intersectionRoutes'
+import { getClusterHorarios } from './endpoints/getClusterHorarios'
 
 const PORT = 9000;
 const app = express();
@@ -19,6 +20,7 @@ app.use(generateGUIDRouter);
 app.use(registerLocationRouter);
 app.use(validatePinRouter);
 app.use(intersectionRoutes);
+app.use(getClusterHorarios);
 
 //app.get('/visual',(req,res,next)=>{
   //res.render('index',{svg: visualMap([])});
