@@ -10,7 +10,7 @@ app.get('/getIntersectionsRoutes', (req,res,next) => {
     //res.render("index",{script : visualMap([])})
     getIntersectionRoutes(""+req.query['canton'])
       .then((locations:any)=> {
-        res.render("index",{svg : visualMap(locations)})
+        res.render("index",{title:"Intersecciones de Rutas por Canton",script : visualMap(locations)})
       });
     //res.send("Query succesfly");
 })

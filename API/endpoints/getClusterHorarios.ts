@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { getClusterHoras } from '../controllers/getClusterHoras-Controller'
-
+import { visualHeat } from '../controllers/visuals';
 
 const app = express();
 
@@ -13,12 +13,12 @@ app.get("/getClustersHorarios", (req, res,next) => {
 
   try {
 
-    const horas = getClusterHoras(""+req.query['canton']); 
+    getClusterHoras(""+req.query['canton'])
+      .then((horas:any[])=> {
+        res.render("index",{title:`Horas mas Frecuentes para Canton ${req.query['canton']}`,script:visualHeat(horas)})
+      });
 
-    res.status(200).send({
-        message: "Insertion successful."
-    });
-   } catch(err) {
+  } catch(err) {
      res.status(500).send({
         message: "Error al procesar request"
      })

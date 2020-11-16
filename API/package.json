@@ -25,6 +25,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
     "mongoose": "^5.10.11",
+    "simplify-geojson": "^1.0.4",
     "uglify-js": "^3.11.6"
   },
   "devDependencies": {

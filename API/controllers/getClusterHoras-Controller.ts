@@ -30,7 +30,7 @@ export function getClusterHoras(canton : any){
         }
         ])
         .then((docs:any)=>{
-          console.log(docs)
+          //console.log(docs)
           return docs;
         })
         .catch((err:any)=>console.error(err));
