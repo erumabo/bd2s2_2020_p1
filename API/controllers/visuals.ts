@@ -172,7 +172,7 @@ svg.append("g")
   .call(d3.axisLeft(y));
 
 const myColor = d3.scaleLinear()
-  .range(["white", "navy"])
+  .range(["white", "darkblue"])
     .domain([0,maximo])
 
 svg.append('g')
