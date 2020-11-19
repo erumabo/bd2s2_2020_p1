@@ -6,6 +6,7 @@ import { registerLocationRouter } from './endpoints/registerLocation';
 import { generateGUIDRouter } from './endpoints/generateGUID';
 import { intersectionRoutes } from './endpoints/intersectionRoutes'
 import { getClusterHorarios } from './endpoints/getClusterHorarios'
+import { testerRouter } from './endpoints/tester'
 
 const PORT = 9000;
 const app = express();
@@ -21,10 +22,7 @@ app.use(registerLocationRouter);
 app.use(validatePinRouter);
 app.use(intersectionRoutes);
 app.use(getClusterHorarios);
-
-//app.get('/visual',(req,res,next)=>{
-  //res.render('index',{svg: visualMap([])});
-//})
+app.use(testerRouter);
 
 app.listen(PORT,()=>{
   console.log('Server escuchando en el puerto ',PORT);

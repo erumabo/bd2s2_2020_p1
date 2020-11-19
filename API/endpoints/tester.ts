@@ -9,7 +9,7 @@ app.post("/tester", (req, res, next) => {
   
       res.set('Access-Control-Allow-Origin','*');
       try {
-        testerController(req.query.guid);
+        testerController(+(req.query.guid||0));
         res.status(201).send({
           message: "Insertion successful."
         });

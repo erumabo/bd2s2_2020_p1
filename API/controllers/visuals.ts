@@ -3,9 +3,38 @@ const uglify = require("uglify-js");
 const fs = require('fs');
 const simplify = require('simplify-geojson')
 const polygons:any = [];
-for(let i=1;i <8;++i) polygons.push(simplify(JSON.parse(fs.readFileSync(`controllers/polygons/${i}.geojson`)),0.001));
+for(let i=1;i < 8;++i)
+  polygons.push(simplify(JSON.parse(fs.readFileSync(`controllers/polygons/${i}.geojson`)),0.001));
 
 function visualMap(data:{lat:Number, long:Number,canton:string,guid:string}[]) : string {
+
+  //Calcular Distancia euclidea de los puntos más apartes del array
+  let diff = data.reduce((acc:any,datum:any)=>{
+    acc[0] = acc[0]<datum.long?acc[0]:datum.long;
+    acc[1] = acc[1]>datum.long?acc[1]:datum.long;
+    acc[2] = acc[2]<datum.lat?acc[2]:datum.lat;
+    acc[3] = acc[2]>datum.lat?acc[3]:datum.lat;
+    return acc;
+  },[100,-100,100,-100]);
+  diff = Math.sqrt((diff[0]-diff[2])*(diff[0]-diff[2]) - (diff[1]-diff[3])*(diff[1]-diff[3]));
+ /* routes = {
+    "10200101": {
+      type: "Feature",
+      properties: { canton : "Canton 1" },
+      geometry: {
+        type: "LineString",
+        coordinates: [[datum.long, datum.lat],[..],[..],[..]]
+      }
+    },
+    "212111": {
+      type: "Feature",
+      properties: { canton : datum.canton },
+      geometry: {
+        type: "LineString",
+        coordinates: [[datum.long, datum.lat],[---],[----],[..]]
+      }
+    },...
+  }*/
   let routes = data.reduce((acc:any,datum:{lat:Number, long:Number,canton:string,guid:string})=>{
     if(acc[datum.guid]) acc[datum.guid].geometry.coordinates.push([datum.long, datum.lat])
     else acc[datum.guid] = {
@@ -18,15 +47,17 @@ function visualMap(data:{lat:Number, long:Number,canton:string,guid:string}[]) :
     }
     return acc;
   },{})
+
+  // Tranformar routes de objeto a array sin llaves
   routes =  Object.keys(routes).map(k=>routes[k])
 
   let ret :string|any = `
-const height = 800, width = 620;
+const height = 700, width = 800;
 const polygons = ${JSON.stringify(polygons)}
       routes = ${JSON.stringify(routes)};
 const projection = d3.geoConicEqualArea()
   .rotate([0,50,0])
-  .fitExtent([[20,20],[(height-40),(width-40)]],{type: "FeatureCollection",features:(routes.length>0?routes:polygons)});
+  .fitExtent([[20,20],[(height-40),(width-40)]],{type: "FeatureCollection",features:${(routes.length>0&&diff>0.01)?'routes':'polygons'}});
 const path = d3.geoPath().projection(projection);
 
 const tooltip = d3.select('body')
@@ -63,7 +94,6 @@ svg.append('g')
       .attr('stroke-width','4')
       .attr('class','ruta')
       .attr('d',path)
-      .text(function(d){return d.properties.canton;})
       .on('mouseover',function(d,i){
         tooltip.transition()
           .duration(200)
@@ -96,6 +126,11 @@ function zooming(event) {
 }
 
 function visualHeat(data:{_id:{canton:string,dia:number,hora:number},total:number}[]) {
+  let maximo = -1;
+  data.forEach(function(datum){
+    if(datum.total>maximo) maximo = datum.total;
+  })
+
   let ret :string|any = `
 const data = ${JSON.stringify(data.map(datum=>{
     return {
@@ -106,13 +141,10 @@ const data = ${JSON.stringify(data.map(datum=>{
     }
   }))};
 
-const height=700-80,width=620-80;
+const height=620-80,width=700-80;
 const x_range = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
      ,y_range = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-let maximo = -1;
-data.forEach(function(datum){
-  if(datum.total>maximo) maximo = datum.total;
-})
+const maximo = ${maximo};
 
 const svg = d3.select("#container")
     .style("width",''+width+'px')
@@ -120,7 +152,7 @@ const svg = d3.select("#container")
   .append("svg")
     .attr("width",''+(width+80))
     .attr("height",''+(height+80))
-    .attr("viewBox","0 0 "+780+" "+700)
+    .attr("viewBox","0 0 "+700+" "+780)
   .append('g')
     .attr("transform",'translate(40,20)')
 
@@ -140,7 +172,7 @@ svg.append("g")
   .call(d3.axisLeft(y));
 
 const myColor = d3.scaleLinear()
-  .range(["white", "#69b3a2"])
+  .range(["white", "navy"])
     .domain([0,maximo])
 
 svg.append('g')
@@ -151,6 +183,7 @@ svg.append('g')
       .attr('y',function(d){return y(d.hora)})
       .attr("width", x.bandwidth() )
       .attr("height", y.bandwidth() )
+      .attr('stroke','#00000040')
       .attr('fill',function(d){return myColor(d.total)})
   `;
 

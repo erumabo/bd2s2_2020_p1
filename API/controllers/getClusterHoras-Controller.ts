@@ -8,7 +8,8 @@ export function getClusterHoras(canton : any){
     return mongoDriver.getCoordenadas().aggregate([
         {
             $match : {
-                "canton" : canton
+                "canton" : canton,
+                "guid" : {"$ne" : 1}
             }
         },
         {

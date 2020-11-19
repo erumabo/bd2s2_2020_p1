@@ -1,7 +1,7 @@
 import mongoDriver from './mongoDriver';
 const Coordenadas = mongoDriver.getCoordenadas();
 
-const cantones = ["Coronado", "Cartago","Moravia"];
+const cantones = ["Golfito"];
 
 export default function testerController(guid : Number){
     registerLocationTester(guid);
@@ -16,8 +16,12 @@ function getLat(){
     // Latitude from 8.603 to 10.951
     // Min 8603  |  Max 10951
     // * 0.001
-    let lat = Math.floor(Math.random() * (10951 - 8603 + 1)) + 8603;
-    lat = lat * 0.001;
+  // 8.361177
+    const coord =     8261177;
+    const min = coord - 20000,
+          max = coord + 10000;
+    let lat = Math.floor(Math.random() * (max - min + 1)) + min;
+    lat = lat * 0.000001;
     return lat;
 }
 
@@ -25,8 +29,11 @@ function getLong(){
     // Longitude from -85.585 to -82.946
     // Min 82946  |  Max 85585
     // * -0.001
-    let long = Math.floor(Math.random() * (85585 - 82946 + 1)) + 82946;
-    long = long * -0.001;
+    const coord =    8364831;
+    const min = coord - 1400,
+          max = coord +  600;
+    let long = Math.floor(Math.random() * (max - min + 1)) + min;
+    long = long * -0.00001;
     return long;
 }
 

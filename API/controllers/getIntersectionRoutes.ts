@@ -1,7 +1,7 @@
 import mongoDriver from './mongoDriver'
 
 export function getIntersectionRoutes(cantonParameter : String){
-    return mongoDriver.getCoordenadas().find({canton:cantonParameter}, {lat: 1, long : 1, canton:1, guid: 1, _id: 0}).then( (result : any) => {
+    return mongoDriver.getCoordenadas().find({canton:cantonParameter, guid:{"$ne":1}}, {lat: 1, long : 1, canton:1, guid: 1, _id: 0}).then( (result : any) => {
         //result = castLongAndLat(result);                                      //Aqui se encuentra el resultado del query, en la variable result
         result = result.map((c:any)=>{return{
           lat:parseFloat(c.lat),

@@ -7,15 +7,16 @@ const app = express();
 
 app.get("/getClustersHorarios", (req, res,next) => {
 //GET generate pin ? guid=string & pin=number
-  console.log(`Consultar Clusters de Horarios X Cantón`);
-
-  //res.set('Access-Control-Allow-Origin','*'); --> No se si se ocupa
+  console.log(`Consultar Clusters de Horarios X Cantón para ${req.query['canton']}`);
 
   try {
 
     getClusterHoras(""+req.query['canton'])
       .then((horas:any[])=> {
-        res.render("index",{title:`Horas mas Frecuentes para Canton ${req.query['canton']}`,script:visualHeat(horas)})
+        res.render("index",{
+          title:`Horas mas Frecuentes para Canton ${req.query['canton']}`,
+          script:visualHeat(horas)
+        })
       });
 
   } catch(err) {
