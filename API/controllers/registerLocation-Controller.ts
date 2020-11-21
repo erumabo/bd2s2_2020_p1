@@ -25,9 +25,9 @@ function registerLocation(lat : any, long : any, guid : any, canton : any){
 
             guid: guid,
 
-            lat : lat,
+            lat : Number(lat.toFixed(6)),
 
-            long: long,
+            long: Number(long.toFixed(6)),
 
             canton: canton,
 

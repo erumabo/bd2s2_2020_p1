@@ -54,8 +54,8 @@ function registerLocationTester(guid : Number){
 
         const newLocation = new Coordenadas({
             guid: guid,
-            lat : lat,
-            long: long,
+            lat : Number(lat.toFixed(6)),
+            long: Number(long.toFixed(6)),
             canton: canton,
             datetime: date
         });

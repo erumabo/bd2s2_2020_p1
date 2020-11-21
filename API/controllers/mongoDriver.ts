@@ -22,9 +22,9 @@ export default class mongoDriver {
     );
     mongoDriver.Coordenadas = mongoose.model('Coordenadas',
       new Schema({
-          guid : String,
-          lat: mongoose.Decimal128,
-          long:  mongoose.Decimal128,
+          guid :  String,
+          lat:    Number,
+          long:   Number,
           canton: String,
           datetime: { type: Date, default: Date.now }
       })
